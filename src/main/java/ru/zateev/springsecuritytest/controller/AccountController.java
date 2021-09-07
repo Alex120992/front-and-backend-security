@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 
-public class WelcomeController {
+public class AccountController {
 
-    @GetMapping("/welcome")
-    public String sayWelcome(){
+    @GetMapping("/account")
+    public String sayWelcome(String input){
         return "Hello controlller";
     }
 }
