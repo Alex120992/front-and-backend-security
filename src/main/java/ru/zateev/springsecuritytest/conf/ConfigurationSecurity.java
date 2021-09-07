@@ -10,15 +10,6 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/account").authenticated()
-                .antMatchers("/balance").authenticated()
-                .antMatchers("/loans").authenticated()
-                .antMatchers("/notices").authenticated()
-                .antMatchers("/contact").permitAll()
-                .antMatchers("/card").permitAll()
-                .and()
-                .formLogin()
-                .and()
-                .httpBasic();
+                .anyRequest().denyAll().and().formLogin().and().httpBasic();
     }
 }
