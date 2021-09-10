@@ -35,7 +35,7 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
                         return corsConfiguration;
                     }
                 })
-                .and()
+                .and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/account").authenticated()
                 .antMatchers("/balance").authenticated()
