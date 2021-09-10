@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -35,14 +36,16 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
                         return corsConfiguration;
                     }
                 })
-                .and().csrf().disable()
+                .and().csrf().ignoringAntMatchers("/contact").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
                 .authorizeRequests()
-                .antMatchers("/account").authenticated()
-                .antMatchers("/balance").authenticated()
-                .antMatchers("/loans").authenticated()
-                .antMatchers("/notices").permitAll()
+                .antMatchers("/myAccount").authenticated()
+                .antMatchers("/myBalance").authenticated()
+                .antMatchers("/myLoans").authenticated()
                 .antMatchers("/contact").permitAll()
-                .antMatchers("/card").authenticated()
+                .antMatchers("/myCards").authenticated()
+                .antMatchers("/user").authenticated()
+                .antMatchers("/notices").permitAll()
                 .and()
                 .formLogin()
                 .and()
