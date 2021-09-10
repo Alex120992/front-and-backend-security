@@ -6,22 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.zateev.springsecuritytest.model.Cards;
 import ru.zateev.springsecuritytest.model.Customer;
-import ru.zateev.springsecuritytest.model.Loans;
-import ru.zateev.springsecuritytest.repository.LoanRepository;
-
+import ru.zateev.springsecuritytest.repository.CardsRepository;
 
 @RestController
-public class LoansController {
+public class CardsController {
 	
 	@Autowired
-	private LoanRepository loanRepository;
+	private CardsRepository cardsRepository;
 	
-	@PostMapping("/myLoans")
-	public List<Loans> getLoanDetails(@RequestBody Customer customer) {
-		List<Loans> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(customer.getId());
-		if (loans != null ) {
-			return loans;
+	@PostMapping("/myCards")
+	public List<Cards> getCardDetails(@RequestBody Customer customer) {
+		List<Cards> cards = cardsRepository.findByCustomerId(customer.getId());
+		if (cards != null ) {
+			return cards;
 		}else {
 			return null;
 		}

@@ -13,9 +13,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
                 @ComponentScan("ru.zateev.springsecuritytest.controller"),
                 @ComponentScan("ru.zateev.springsecuritytest.conf"),
                 @ComponentScan("ru.zateev.springsecuritytest.service"),
-                @ComponentScan("ru.zateev.springsecuritytest.repositry")
+                @ComponentScan("ru.zateev.springsecuritytest.repository")
         })
-@EnableJpaRepositories("ru.zateev.springsecuritytest.repositry")
+@EnableJpaRepositories("ru.zateev.springsecuritytest.repository")
 @EntityScan("ru.zateev.springsecuritytest.model")
 public class SpringSecurityTestApplication {
     public static void main(String[] args) {

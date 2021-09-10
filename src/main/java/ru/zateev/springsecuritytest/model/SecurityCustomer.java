@@ -1,5 +1,6 @@
 package ru.zateev.springsecuritytest.model;
 
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +10,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class SecurityCustomer implements UserDetails {
-    private final Customers customers;
+    private final Customer customers;
 
-    public SecurityCustomer(Customers customers) {
+    public SecurityCustomer(Customer customers) {
         this.customers = customers;
     }
 
