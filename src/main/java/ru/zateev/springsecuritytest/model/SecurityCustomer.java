@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SecurityCustomer implements UserDetails {
     private final Customer customers;
-
+    //
     public SecurityCustomer(Customer customers) {
         this.customers = customers;
     }
