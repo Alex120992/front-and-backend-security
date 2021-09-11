@@ -12,18 +12,14 @@ CREATE TABLE users
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE authorities
 (
-    id
-        serial
-        PRIMARY KEY,
+    id serial PRIMARY KEY,
+    username varchar(45) NOT NULL,
+    authority varchar(45) NOT NULL,
+    customer_id int NOT NULL,
+    CONSTRAINT name_foreign foreign key (customer_id)
+            REFERENCES customer (customer_id) ON DELETE CASCADE
 
-    username
-        varchar(45) NOT NULL,
-    authority
-        varchar(45) NOT NULL,
-    PRIMARY KEY
-        (
-         id
-            )
+
 );
 
 -- INSERT  INTO users
@@ -127,11 +123,12 @@ CREATE INDEX customer_id ON accounts
 INSERT INTO accounts (customer_id, account_number, account_type, branch_address, create_dt)
 VALUES (1, 186576453434, 'Savings', '123 Main Street, New York', current_date);
 
--- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+DROP TABLE account_transactions;
 CREATE TABLE account_transactions
 (
-    transaction_id      varchar(200) NOT NULL,
-    account_number      int          NOT NULL,
+    transaction_id      uuid NOT NULL DEFAULT gen_random_uuid(),
+    account_number      bigint          NOT NULL,
     customer_id         int          NOT NULL,
     transaction_dt      date         NOT NULL,
     transaction_summary varchar(200) NOT NULL,
@@ -171,35 +168,35 @@ CREATE INDEX account_number ON account_transactions
 
 
 
-INSERT INTO account_transactions (transaction_id, account_number, customer_id, transaction_dt,
+INSERT INTO account_transactions (account_number, customer_id, transaction_dt,
                                   transaction_summary, transaction_type, transaction_amt,
                                   closing_balance, create_dt)
-VALUES (gen_random_uuid(), 186576453434, 1, current_date - 7, 'Coffee Shop', 'Withdrawal', 30, 34500, current_date - 7);
+VALUES ( 186576453434, 1, current_date - 7, 'Coffee Shop', 'Withdrawal', 30, 34500, current_date - 7);
 
-INSERT INTO account_transactions (transaction_id, account_number, customer_id, transaction_dt,
+INSERT INTO account_transactions (account_number, customer_id, transaction_dt,
                                   transaction_summary, transaction_type, transaction_amt,
                                   closing_balance, create_dt)
-VALUES (gen_random_uuid(), 186576453434, 1, current_date - 6, 'Uber', 'Withdrawal', 100, 34400, current_date - 6);
+VALUES (186576453434, 1, current_date - 6, 'Uber', 'Withdrawal', 100, 34400, current_date - 6);
 
-INSERT INTO account_transactions (transaction_id, account_number, customer_id, transaction_dt,
+INSERT INTO account_transactions ( account_number, customer_id, transaction_dt,
                                   transaction_summary, transaction_type, transaction_amt,
                                   closing_balance, create_dt)
-VALUES (gen_random_uuid(), 186576453434, 1, current_date - 5, 'Self Deposit', 'Deposit', 500, 34900, current_date - 5);
+VALUES ( 186576453434, 1, current_date - 5, 'Self Deposit', 'Deposit', 500, 34900, current_date - 5);
 
-INSERT INTO account_transactions (transaction_id, account_number, customer_id, transaction_dt,
+INSERT INTO account_transactions (account_number, customer_id, transaction_dt,
                                   transaction_summary, transaction_type, transaction_amt,
                                   closing_balance, create_dt)
-VALUES (gen_random_uuid(), 186576453434, 1, current_date - 4, 'Ebay', 'Withdrawal', 600, 34300, current_date - 4);
+VALUES ( 186576453434, 1, current_date - 4, 'Ebay', 'Withdrawal', 600, 34300, current_date - 4);
 
-INSERT INTO account_transactions (transaction_id, account_number, customer_id, transaction_dt,
+INSERT INTO account_transactions (account_number, customer_id, transaction_dt,
                                   transaction_summary, transaction_type, transaction_amt,
                                   closing_balance, create_dt)
-VALUES (gen_random_uuid(), 186576453434, 1, current_date - 2, 'OnlineTransfer', 'Deposit', 700, 35000, current_date - 2);
+VALUES ( 186576453434, 1, current_date - 2, 'OnlineTransfer', 'Deposit', 700, 35000, current_date - 2);
 
-INSERT INTO account_transactions (transaction_id, account_number, customer_id, transaction_dt,
+INSERT INTO account_transactions (account_number, customer_id, transaction_dt,
                                   transaction_summary, transaction_type, transaction_amt,
                                   closing_balance, create_dt)
-VALUES (gen_random_uuid(), 186576453434, 1, current_date - 1, 'Amazon.com', 'Withdrawal', 100, 34900, current_date - 1);
+VALUES ( 186576453434, 1, current_date - 1, 'Amazon.com', 'Withdrawal', 100, 34900, current_date - 1);
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -267,7 +264,7 @@ VALUES (1, '2018-02-14', 'Personal', 10000, 3500, 6500, '2018-02-14');
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE cards
 (
-    card_id          int PRIMARY KEY,
+    card_id          serial PRIMARY KEY,
     card_number
                      varchar(100) NOT NULL,
     customer_id      int          NOT NULL,
@@ -276,7 +273,6 @@ CREATE TABLE cards
     amount_used      int          NOT NULL,
     available_amount int          NOT NULL,
     create_dt        date DEFAULT NULL,
-    PRIMARY KEY (card_id),
     CONSTRAINT card_customer_ibfk_1 FOREIGN KEY (customer_id) REFERENCES customer (customer_id) ON DELETE CASCADE
 );
 
@@ -296,16 +292,14 @@ VALUES ('2359XXXX9346', 1, 'Credit', 20000, 4000, 16000, current_date);
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE SEQUENCE notice_details_seq;
-
 CREATE TABLE notice_details
 (
 
-    notice_id      int          NOT NULL
-                        DEFAULT NEXTVAL('notice_details_seq'),
+    notice_id int NOT NULL DEFAULT NEXTVAL('notice_details_seq'),
 
-    notice_summary varchar(200) NOT NULL,
-    notice_details varchar(500) NOT NULL,
-    notic_beg_dt   date         NOT NULL,
+    notice_summary varchar(200) NOT NULL DEFAULT 'a',
+    notice_details varchar(500) NOT NULL DEFAULT 'A',
+    notic_beg_dt   date         NOT NULL DEFAULT 'a',
     notic_end_dt   date DEFAULT NULL,
     create_dt      date DEFAULT NULL,
     update_dt      date DEFAULT NULL,
@@ -351,17 +345,15 @@ VALUES ('COVID-19 Insurance',
         'EazyBank launched an insurance policy which will cover COVID-19 expenses. Please reach out to the branch for more details',
         '2020-10-14', '2020-12-31', current_date, null);
 
--- SQLINES LICENSE FOR EVALUATION USE ONLY
+DROP TABLE contact_messages;
+CREATE SEQUENCE hibernate_sequence START 1;
 CREATE TABLE contact_messages
 (
-    contact_id    varchar(50)   NOT NULL,
+    contact_id    bigint   NOT NULL ,
     contact_name  varchar(50)   NOT NULL,
     contact_email varchar(100)  NOT NULL,
     subject       varchar(500)  NOT NULL,
     message       varchar(2000) NOT NULL,
-    create_dt     date DEFAULT NULL,
-    PRIMARY KEY
-        (
-         contact_id
-            )
+    create_dt     date DEFAULT current_date,
+    PRIMARY KEY (contact_id)
 );

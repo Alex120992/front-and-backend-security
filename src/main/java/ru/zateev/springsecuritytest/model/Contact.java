@@ -1,21 +1,18 @@
 package ru.zateev.springsecuritytest.model;
 
 import java.sql.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.time.LocalDate;
+import javax.persistence.*;
 
 @Entity
-@Table(
-        name = "contact_messages"
-)
+@Table(name = "contact_messages")
 public class Contact {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(
             name = "contact_id"
     )
-    private String contactId;
+    private int contactId;
     @Column(
             name = "contact_name"
     )
@@ -29,16 +26,16 @@ public class Contact {
     @Column(
             name = "create_dt"
     )
-    private Date createDt;
+    private LocalDate createDt;
 
     public Contact() {
     }
 
-    public String getContactId() {
-        return this.contactId;
+    public int getContactId() {
+        return contactId;
     }
 
-    public void setContactId(String contactId) {
+    public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
@@ -74,11 +71,11 @@ public class Contact {
         this.message = message;
     }
 
-    public Date getCreateDt() {
-        return this.createDt;
+    public LocalDate getCreateDt() {
+        return createDt;
     }
 
-    public void setCreateDt(Date createDt) {
+    public void setCreateDt(LocalDate createDt) {
         this.createDt = createDt;
     }
 }

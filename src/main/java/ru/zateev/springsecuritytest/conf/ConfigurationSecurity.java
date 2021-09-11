@@ -39,13 +39,13 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
                 .and().csrf().ignoringAntMatchers("/contact").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/myAccount").authenticated()
-                .antMatchers("/myBalance").authenticated()
-                .antMatchers("/myLoans").authenticated()
-                .antMatchers("/contact").permitAll()
+                .antMatchers("/myAccount").hasAuthority("WRITE")
+                .antMatchers("/myBalance").hasAuthority("READ")
+                .antMatchers("/myLoans").hasAuthority("DELETE") // имеют доступ только пользователи с этими ролями
                 .antMatchers("/myCards").authenticated()
-                .antMatchers("/user").authenticated()
+                .antMatchers("/user").authenticated() // имеет доступ тот кто прошел аутентификацию
                 .antMatchers("/notices").permitAll()
+                .antMatchers("/contact").permitAll()
                 .and()
                 .formLogin()
                 .and()

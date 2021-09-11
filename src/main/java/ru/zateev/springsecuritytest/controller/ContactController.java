@@ -1,6 +1,7 @@
 package ru.zateev.springsecuritytest.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,7 @@ public class ContactController {
 	
 	@PostMapping("/contact")
 	public Contact saveContactInquiryDetails(@RequestBody Contact contact) {
-		contact.setContactId(getServiceReqNumber());
-		contact.setCreateDt(new Date(System.currentTimeMillis()));
+		contact.setCreateDt(LocalDate.now());
 		return contactRepository.save(contact);
 	}
 

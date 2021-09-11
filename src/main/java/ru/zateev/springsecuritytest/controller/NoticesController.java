@@ -22,6 +22,7 @@ public class NoticesController {
 		System.out.println("1YES********");
 		if (notices != null ) {
 			System.out.println("2YES********");
+			System.out.println(notices);
 			return notices;
 		}else {
 			return null;

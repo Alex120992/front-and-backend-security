@@ -10,12 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import ru.zateev.springsecuritytest.model.Authority;
 import ru.zateev.springsecuritytest.model.Customer;
 import ru.zateev.springsecuritytest.repository.CustomerRepository;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /* ProviderManager имеет список AuthenticationProviders которые проверяют пользователя */
 @Component
@@ -34,20 +36,24 @@ public class UsernamePwdConsumersAuthenticate implements AuthenticationProvider 
         //пароль
         String pwd = authentication.getCredentials().toString();
         List<Customer> customersList = customerRepository.findByEmail(username);
-        if (customersList.size()>0){
-            if(passwordEncoder.matches(pwd, customersList.get(0).getPwd())){
-                List<GrantedAuthority> authorityList = new ArrayList<>();
-                authorityList.add(new SimpleGrantedAuthority(customersList.get(0).getRole()));
-
+        if (customersList.size() > 0) {
+            if (passwordEncoder.matches(pwd, customersList.get(0).getPwd())) {
                 //если отпечаток пальца или скан лица, то UsernamePasswordAuthenticationToken не используется
-
-                return new UsernamePasswordAuthenticationToken(username, pwd, authorityList);
-            }else {
+                return new UsernamePasswordAuthenticationToken(username, pwd, getGrantedAuthorities(customersList.get(0).getAuthorities()));
+            } else {
                 throw new BadCredentialsException("Invalid password");
             }
-        }else {
+        } else {
             throw new BadCredentialsException("No user registred with this details");
         }
+    }
+    // трансфорМируем Set<Authority> authoritySet в List<GrantedAuthority>
+    private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authoritySet) {
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        for (Authority g : authoritySet) {
+            authorityList.add(new SimpleGrantedAuthority(g.getAuthority()));
+        }
+        return authorityList;
     }
 
     @Override

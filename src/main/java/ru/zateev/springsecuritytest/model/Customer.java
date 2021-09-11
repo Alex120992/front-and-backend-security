@@ -1,11 +1,10 @@
 package ru.zateev.springsecuritytest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.scheduling.concurrent.ScheduledExecutorTask;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Customer {
@@ -30,6 +29,9 @@ public class Customer {
             name = "create_dt"
     )
     private String createDt;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Authority> authorities;
 
     public Customer() {
     }
@@ -88,5 +90,13 @@ public class Customer {
 
     public void setCreateDt(String createDt) {
         this.createDt = createDt;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 }

@@ -1,6 +1,8 @@
 package ru.zateev.springsecuritytest.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Locale;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,19 +34,19 @@ public class Notice {
     @Column(
             name = "notic_beg_dt"
     )
-    private Date noticBegDt;
+    private LocalDate noticBegDt;
     @Column(
             name = "notic_end_dt"
     )
-    private Date noticEndDt;
+    private LocalDate noticEndDt;
     @Column(
             name = "create_dt"
     )
-    private Date createDt;
+    private LocalDate createDt;
     @Column(
             name = "update_dt"
     )
-    private Date updateDt;
+    private LocalDate updateDt;
 
     public Notice() {
     }
@@ -73,35 +75,48 @@ public class Notice {
         this.noticeDetails = noticeDetails;
     }
 
-    public Date getNoticBegDt() {
-        return this.noticBegDt;
+    public LocalDate getNoticBegDt() {
+        return noticBegDt;
     }
 
-    public void setNoticBegDt(Date noticBegDt) {
+    public void setNoticBegDt(LocalDate noticBegDt) {
         this.noticBegDt = noticBegDt;
     }
 
-    public Date getNoticEndDt() {
-        return this.noticEndDt;
+    public LocalDate getNoticEndDt() {
+        return noticEndDt;
     }
 
-    public void setNoticEndDt(Date noticEndDt) {
+    public void setNoticEndDt(LocalDate noticEndDt) {
         this.noticEndDt = noticEndDt;
     }
 
-    public Date getCreateDt() {
-        return this.createDt;
+    public LocalDate getCreateDt() {
+        return createDt;
     }
 
-    public void setCreateDt(Date createDt) {
+    public void setCreateDt(LocalDate createDt) {
         this.createDt = createDt;
     }
 
-    public Date getUpdateDt() {
-        return this.updateDt;
+    public LocalDate getUpdateDt() {
+        return updateDt;
     }
 
-    public void setUpdateDt(Date updateDt) {
+    public void setUpdateDt(LocalDate updateDt) {
         this.updateDt = updateDt;
+    }
+
+    @Override
+    public String toString() {
+        return "Notice{" +
+                "noticeId=" + noticeId +
+                ", noticeSummary='" + noticeSummary + '\'' +
+                ", noticeDetails='" + noticeDetails + '\'' +
+                ", noticBegDt=" + noticBegDt +
+                ", noticEndDt=" + noticEndDt +
+                ", createDt=" + createDt +
+                ", updateDt=" + updateDt +
+                '}';
     }
 }
